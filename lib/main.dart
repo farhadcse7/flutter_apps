@@ -1,125 +1,357 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.sizeOf(context).width;
+
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Product CheckOut',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        textTheme: TextTheme(
+          bodySmall: TextStyle(
+            color: Colors.black54,
+            fontSize: width < 300 ? 10 : 15,
+          ),
+          bodyMedium: TextStyle(
+            color: Colors.black,
+            fontSize: width < 300 ? 13 : 16,
+          ),
+          headlineLarge: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontSize: width < 300 ? 20 : 35,
+          ),
+          headlineMedium: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontSize: width < 300 ? 13 : 17,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(10.0),
+              minimumSize: const Size(30, 30)),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      home: const HomeScreen(),
     );
   }
+}
+
+enum SampleItem { itemOne }
+
+//HomeScreen Class
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  SampleItem? selectedMenu;
+  final List<Product> _products = [
+    Product(
+      image: "images/image1.jpg",
+      name: "Pullover",
+      color: "Black",
+      size: "L",
+      price: 51,
+    ),
+    Product(
+      image: "images/image2.jpg",
+      name: "T-Shirt",
+      color: "Gray",
+      size: "L",
+      price: 30,
+    ),
+    Product(
+      image: "images/image3.jpg",
+      name: "Sport Dress",
+      color: "Black",
+      size: "M",
+      price: 43,
+    ),
+  ];
+  int _totalAmount = 0;
+
+  @override
+  void initState() {
+    _totalAmount = _products
+        .map((e) => e.price)
+        .reduce((value, element) => value + element);
+    super.initState();
+  }
+
+  void _showSnackBar(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.sizeOf(context).width;
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF9F9F9),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TextField(
+                decoration: InputDecoration(
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              ),
+              Text(
+                "My Bag",
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _products.length,
+                  itemBuilder: (context, index) => Card(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    elevation: 1,
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          _products[index].image,
+                          width: width < 300 ? 70 : 115,
+                          height: width < 300 ? 70 : 115,
+                          fit: BoxFit.fill,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _products[index].name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Color: ',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: _products[index].color,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const TextSpan(text: ' Size: '),
+                                              TextSpan(
+                                                text: _products[index].size,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    PopupMenuButton<SampleItem>(
+                                      color: Colors.grey,
+                                      initialValue: selectedMenu,
+                                      // Callback that sets the selected popup menu item.
+                                      onSelected: (SampleItem item) {
+                                        setState(() {
+                                          selectedMenu = item;
+                                        });
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<SampleItem>>[
+                                        const PopupMenuItem<SampleItem>(
+                                          value: SampleItem.itemOne,
+                                          child: Text('Delete'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: width < 300
+                                      ? 0
+                                      : width > 700
+                                          ? 25
+                                          : 15,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            if (_products[index].quantity > 1) {
+                                              setState(() {
+                                                _products[index].quantity--;
+                                                _totalAmount -=
+                                                    _products[index].price;
+                                              });
+                                            }
+                                          },
+                                          child: Text(
+                                            "-",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "${_products[index].quantity}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _products[index].quantity++;
+                                              _totalAmount +=
+                                                  _products[index].price;
+                                            });
+                                          },
+                                          child: Text(
+                                            "+",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: width < 300 ? 10 : 16),
+                                      child: Text(
+                                        "${_products[index].price}\$",
+                                        style: TextStyle(
+                                          fontSize: width < 300 ? 12 : 15,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Total amount:",
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          "$_totalAmount\$",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_totalAmount == 0) {
+                            _showSnackBar("You need to add product!!");
+                          } else {
+                            _showSnackBar("Congratulation!!");
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(50),
+                            ),
+                          ),
+                          backgroundColor: const Color(0XFFDB3022),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text("CHECK OUT"),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//Product Class
+class Product {
+  String image;
+  String name;
+  String color;
+  String size;
+  int quantity = 1;
+  int price;
+
+  Product(
+      {required this.image,
+      required this.name,
+      required this.color,
+      required this.size,
+      required this.price});
 }
