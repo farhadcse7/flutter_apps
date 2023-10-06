@@ -11,131 +11,105 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: true,
-      title: 'App',
-      home: ProfileScreen(),
+      title: 'Live Test 9',
+      home: HomeScreen(),
     );
   }
 }
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _index = 0;
+
+  _handleClick(int index, String msg) {
+    _index = index;
+    setState(() {});
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 1),
+        content: Text(msg),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (context, orientation) {
-        if (orientation == Orientation.portrait) {
-          // Portrait Mode
-          return Scaffold(
-            appBar: buildAppBar(),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    buildProfilePicture(),
-                    const SizedBox(height: 10),
-                    Center(child: buildName(context)),
-                    const SizedBox(height: 15),
-                    buildDescription(context),
-                    const SizedBox(height: 10),
-                    buildImageGrid(),
-                  ],
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Size Selector"),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Wrap(
+            spacing: 10,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor:
+                  _index == 0 ? Colors.amber.shade700 : Colors.grey,
                 ),
+                onPressed: () => _handleClick(0, "S"),
+                child: const Text("S"),
               ),
-            ),
-          );
-        } else {
-          // Landscape Mode
-          return Scaffold(
-            appBar: buildAppBar(),
-            body: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: buildProfilePicture(),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor:
+                  _index == 1 ? Colors.amber.shade700 : Colors.grey,
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        buildName(context),
-                        const SizedBox(height: 15),
-                        buildDescription(context),
-                        const SizedBox(height: 10),
-                        buildImageGrid(),
-                      ],
-                    ),
-                  ),
+                onPressed: () => _handleClick(1, "M"),
+                child: const Text("M"),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor:
+                  _index == 2 ? Colors.amber.shade700 : Colors.grey,
                 ),
-                const SizedBox(width: 10),
-              ],
-            ),
-          );
-        }
-      },
-    );
-  }
-}
-
-//class started
-
-
-const String myName = "Farhad Mia";
-const String myDescription =
-    "Hello, I am Md. Farhad Mia. I love Travelling and I want to explore the whole world that's my dream.";
-
-AppBar buildAppBar() {
-  return AppBar(
-    title: const Text("Profile"),
-    toolbarHeight: 50,
-  );
-}
-
-GridView buildImageGrid() {
-  return GridView.builder(
-    shrinkWrap: true,
-    itemCount: 9,
-    physics: const NeverScrollableScrollPhysics(),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 3,
-      mainAxisSpacing: 5,
-      crossAxisSpacing: 5,
-    ),
-    itemBuilder: (context, index) => Image.asset(
-      "images/imageB.jpg",
-      fit: BoxFit.cover,
-    ),
-  );
-}
-
-AspectRatio buildProfilePicture() {
-  return AspectRatio(
-    aspectRatio: 1,
-    child: Container(
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage("images/imageA.jpg"),
+                onPressed: () => _handleClick(2, "L"),
+                child: const Text("L"),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor:
+                  _index == 3 ? Colors.amber.shade700 : Colors.grey,
+                ),
+                onPressed: () => _handleClick(3, "XL"),
+                child: const Text("XL"),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor:
+                  _index == 4 ? Colors.amber.shade700 : Colors.grey,
+                ),
+                onPressed: () => _handleClick(4, "XXL"),
+                child: const Text("XXL"),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor:
+                  _index == 5 ? Colors.amber.shade700 : Colors.grey,
+                ),
+                onPressed: () => _handleClick(5, "XXXL"),
+                child: const Text("XXXL"),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
-
-Text buildName(BuildContext context) {
-  return Text(
-    myName,
-    style: Theme.of(context).textTheme.titleLarge,
-  );
-}
-
-Text buildDescription(BuildContext context) {
-  return Text(
-    myDescription,
-    style: Theme.of(context).textTheme.bodyLarge,
-  );
+    );
+  }
 }
