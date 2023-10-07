@@ -1,16 +1,9 @@
-# flutter_apps
+# Product Checkout Apps
 
-A new Flutter project.
+A new Flutter project for assignment 9.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+![1](https://github.com/farhadcse7/flutter_apps/assets/48383136/ea85ca2c-ff5a-4614-a0cd-f1cd894d5403)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![2](https://github.com/farhadcse7/flutter_apps/assets/48383136/d4622b6a-e7e5-4a0c-9622-0133d32d7700)
